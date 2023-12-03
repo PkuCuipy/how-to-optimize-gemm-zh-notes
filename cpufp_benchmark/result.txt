@@ -1,0 +1,10 @@
+Thread(s): 1
+avx512_vnni int8 perf: 579.2609 gops.
+avx512f fp32 perf: 159.7380 gflops.
+avx512f fp64 perf: 79.8715 gflops.
+fma fp32 perf: 89.4671 gflops.
+fma fp64 perf: 44.7405 gflops.
+avx fp32 perf: 44.7381 gflops.
+avx fp64 perf: 22.3665 gflops.
+sse fp32 perf: 26.3599 gflops.
+sse fp64 perf: 13.1831 gflops.
