@@ -244,7 +244,9 @@ for ... {
 
 > 原文通过这两个优化获得了性能提升, 我实测则性能不变. 考察汇编代码也几乎不变, 应该是编译器自动进行了优化.
 >
-> <img src=".report.images/image-20220802185228381.png" alt="image-20220802185228381" style="zoom:67%;" />7 对应【优化 1: 用指针索引】,  8 对应【优化 2: 间接寻址】
+> <img src=".report.images/image-20220802185228381.png" alt="image-20220802185228381" style="zoom:67%;" />
+> 
+> 上图中 7 对应【优化 1: 用指针索引】,  8 对应【优化 2: 间接寻址】
 
 ### 版本总结
 
@@ -582,7 +584,9 @@ void MY_MMult(int m, int n, int k, double *a, int lda, double *b, int ldb, doubl
 
 这里取超参数 `mc = 256`, `kc = 128` 作为分块大小, 测试结果如下:
 
-<img src=".report.images/image-20220802211237866.png" alt="image-20220802211237866" style="zoom:67%;" />绿线给出了使用 ｢分块矩阵｣ 技巧优化后的结果. (红线对应优化前)
+<img src=".report.images/image-20220802211237866.png" alt="image-20220802211237866" style="zoom:67%;" />
+
+绿线给出了使用 ｢分块矩阵｣ 技巧优化后的结果. (红线对应优化前)
 
 可见, 矩阵分块乘的方法成功在大尺寸下保持了小尺寸时获得的最高性能.
 
@@ -1012,7 +1016,9 @@ _mm512_storeu_pd(  &C(0, 0),
 与之类似地, 在 `PackMatrixA` 函数中对矩阵 A 的打包也可以同理使用 SIMD 指令进行优化.
 而经过这两个优化后, 程序性能得到明显提升 (蓝色→绿线→红线), 最终达到峰值性能的 80% 左右:
 
-<img src=".report.images/image-20220818013945728.png" alt="image-20220818013945728" style="zoom:67%;" />AVX512 各版本性能对比
+<img src=".report.images/image-20220818013945728.png" alt="image-20220818013945728" style="zoom:67%;" />
+
+AVX512 各版本性能对比图⬆
 
 
 
@@ -1020,7 +1026,7 @@ _mm512_storeu_pd(  &C(0, 0),
 
 尽管原教程利用上述优化方法取得了 `SSE` 指令下硬件 90% 以上的性能, 但笔者使用相同的方法却无法在 `AXV512` 下取得相当比例的性能表现, 仅达到 80% 左右. 而在另一个针对 `AVX512` 的 [DGeMM 优化教程](https://github.com/yzhaiustc/Optimizing-DGEMM-on-Intel-CPUs-with-AVX512F)中, 其 `Kernel_11` 版本从涉及的优化技术上看, 几乎刚好对应于目前的 `24x8` 版本. 该教程在此时达到峰值性能的 68% 左右:
 
-<img src="https://camo.githubusercontent.com/3288587595b26e641bd4bd1065b0ff6412df70e0d88e45794328846c3150d2c6/68747470733a2f2f7777772e63732e7563722e6564752f7e797a6861693031352f4350555f47454d4d2f4b65726e656c31302e706e67" alt="img" style="zoom:50%;" />
+<img src=".report.images/v2-62f5161f68b1b1d28f8dd7b6d6107e46_1440w.webp" alt="img" style="zoom:50%;" />
 
 不过它还有两个进一步的优化:
 
@@ -1029,7 +1035,7 @@ _mm512_storeu_pd(  &C(0, 0),
 
 最终优化后的平均性能达到了峰值的 90% 以上, 大尺寸下性能甚至超过了 Intel MKL:
 
-<img src="https://camo.githubusercontent.com/a21353fb6546c9a34265b58aaeb0def134f567d9aec1ed3cd22740fab42e0c05/68747470733a2f2f7777772e63732e7563722e6564752f7e797a6861693031352f4350555f47454d4d2f4b65726e656c31382e706e67" alt="img" style="zoom:50%;" />
+<img src=".report.images/v2-e296afb347060e8af73456b48926e03e_1440w.webp" alt="img" style="zoom:50%;" />
 
 由此观之, 笔者的 `24x8` 版本还有很多优化空间. 不过涉及的技术已经超出原教程了.
 
